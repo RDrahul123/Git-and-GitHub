@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f8f8f5">
+    <meta name="description" content="A practical, interactive course for learning Git and GitHub from first commit to confident collaboration.">
+    <title>Git & GitHub — The Field Guide</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='12' fill='%231b7552'/%3E%3Cpath d='M13 10v20m0-10h14m0 0-5-5m5 5-5 5' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+    <link rel="stylesheet" href="styles.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/marked@15.0.7/marked.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"></script>
+    <script type="module" src="app.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to course content</a>
+
+    <svg class="icon-library" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+      <symbol id="icon-git" viewBox="0 0 24 24"><path d="m21 11-8-8a1.4 1.4 0 0 0-2 0l-2 2 2.6 2.6a2 2 0 0 1 2.5 2.5L17 15a2 2 0 0 1 2.5 2.5l1.5 1.5a1.4 1.4 0 0 0 2-2l-2-2a1.4 1.4 0 0 0 0-2Z" transform="translate(-2 -2)"/><path d="m3 13 8-8m-5 8v4a2 2 0 1 0 2 2v-4l4-4m-4 8v2"/></symbol>
+      <symbol id="icon-search" viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></symbol>
+      <symbol id="icon-book" viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v17H6.5A2.5 2.5 0 0 0 4 22z"/><path d="M4 5.5v14A2.5 2.5 0 0 1 6.5 17H20M8 7h8M8 11h8"/></symbol>
+      <symbol id="icon-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+      <symbol id="icon-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></symbol>
+      <symbol id="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></symbol>
+      <symbol id="icon-moon" viewBox="0 0 24 24"><path d="M20.9 13A9 9 0 0 1 11 3.1 9 9 0 1 0 20.9 13Z"/></symbol>
+      <symbol id="icon-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+      <symbol id="icon-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+      <symbol id="icon-external" viewBox="0 0 24 24"><path d="M14 4h6v6m-11 4L20 4"/><path d="M18 13v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h6"/></symbol>
+    </svg>
+
+    <div class="reading-progress" id="reading-progress" aria-hidden="true"></div>
+    <div class="mobile-scrim" id="mobile-scrim"></div>
+
+    <aside class="sidebar" id="sidebar" aria-label="Course navigation">
+      <a class="brand" href="?" data-route="home" aria-label="Git and GitHub Field Guide home">
+        <span class="brand-mark"><svg class="icon"><use href="#icon-git"></use></svg></span>
+        <span class="brand-copy"><strong>fieldguide</strong><small>GIT + GITHUB</small></span>
+      </a>
+
+      <div class="sidebar-course">
+        <span class="eyebrow">THE PRACTICAL COURSE</span>
+        <p>From your first commit to confident collaboration.</p>
+      </div>
+
+      <button class="sidebar-search" id="open-search" type="button">
+        <svg class="icon"><use href="#icon-search"></use></svg>
+        <span>Search lessons</span>
+        <kbd>/</kbd>
+      </button>
+
+      <div class="progress-card" aria-live="polite">
+        <div class="progress-card-top"><span>Your progress</span><strong id="progress-label">0%</strong></div>
+        <div class="progress-track"><span id="progress-fill"></span></div>
+        <small id="progress-detail">0 of 15 lessons complete</small>
+      </div>
+
+      <nav class="course-nav" id="course-nav" aria-label="Course lessons"></nav>
+
+      <div class="sidebar-bottom">
+        <button class="quiet-button" id="theme-toggle" type="button" aria-label="Switch color theme">
+          <svg class="icon theme-sun"><use href="#icon-sun"></use></svg>
+          <svg class="icon theme-moon"><use href="#icon-moon"></use></svg>
+          <span>Toggle appearance</span>
+        </button>
+        <a class="repo-link" href="https://github.com/RDrahul123/Git-and-GitHub" target="_blank" rel="noreferrer">
+          <span class="repo-dot"></span> Open source course
+          <svg class="icon small-icon"><use href="#icon-external"></use></svg>
+        </a>
+      </div>
+    </aside>
+
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="icon-button mobile-menu-button" id="mobile-menu" type="button" aria-label="Open course navigation" aria-expanded="false">
+            <svg class="icon"><use href="#icon-menu"></use></svg>
+          </button>
+          <div class="breadcrumbs"><span>COURSE</span><span class="breadcrumb-slash">/</span><strong id="breadcrumb-current">Overview</strong></div>
+        </div>
+        <div class="topbar-actions">
+          <button class="top-search" id="top-search" type="button"><svg class="icon"><use href="#icon-search"></use></svg><span>Search the course</span><kbd id="search-shortcut">Ctrl K</kbd></button>
+          <a class="top-github" href="https://github.com/RDrahul123/Git-and-GitHub" target="_blank" rel="noreferrer" aria-label="View course on GitHub">
+            <svg class="icon"><use href="#icon-external"></use></svg>
+          </a>
+        </div>
+      </header>
+
+      <main id="main-content" tabindex="-1">
+        <div class="page-container" id="page-content" aria-live="polite">
+          <div class="loading-state"><span class="loader"></span><p>Opening the field guide…</p></div>
+        </div>
+      </main>
+
+      <footer class="site-footer"><span>Made for curious builders.</span><span>Learn it. Try it. Ship it.</span></footer>
+    </div>
+
+    <dialog class="search-dialog" id="search-dialog" aria-labelledby="search-title">
+      <div class="search-dialog-inner">
+        <div class="search-box">
+          <svg class="icon"><use href="#icon-search"></use></svg>
+          <label class="visually-hidden" id="search-title" for="search-input">Search all lessons</label>
+          <input id="search-input" type="search" placeholder="Search commands, concepts, and lessons…" autocomplete="off">
+          <button class="dialog-close" id="close-search" type="button" aria-label="Close search"><svg class="icon"><use href="#icon-close"></use></svg></button>
+        </div>
+        <div class="search-hint"><span>Search all course notes</span><kbd>ESC</kbd></div>
+        <div class="search-results" id="search-results" role="listbox" aria-label="Search results"><p class="search-empty">Type to search the course content.</p></div>
+      </div>
+    </dialog>
+  </body>
+</html>

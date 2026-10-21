@@ -10,7 +10,9 @@
 
 This repository is a standalone learning path for Git (the version-control tool) and GitHub (a hosted collaboration platform). Start with the mental model, practice each command in a disposable repository, then use the workflow and troubleshooting sections as references.
 
-**Course website landing page:** [index.md](index.md) (useful when publishing with GitHub Pages).
+**Course website:** open [`index.html`](index.html) in a static web server; GitHub Pages serves it as the interactive course landing page.
+
+To preview locally, run `python -m http.server 8000` from the repository root, then open `http://localhost:8000`. The course UI loads Markdown and its rendering libraries in the browser, so use a web server instead of opening the file directly.
 
 ## What you will learn
 
@@ -69,7 +71,7 @@ git remote add origin https://github.com/OWNER/git-github-notes.git
 git push -u origin main
 ```
 
-Replace `OWNER` with your account or organization. To publish as a website, open **Settings → Pages**, select **Deploy from a branch**, choose `main` and `/ (root)`, and save. The included [`index.md`](index.md) becomes the Pages landing page; a dedicated static-site generator can provide more polished navigation if desired.
+Replace `OWNER` with your account or organization. To publish as a website, open **Settings → Pages**, select **Deploy from a branch**, choose `main` and `/ (root)`, and save. The included [`index.html`](index.html) is the interactive course landing page; [`index.md`](index.md) remains a Markdown fallback.
 
 ### Publishing checklist
 

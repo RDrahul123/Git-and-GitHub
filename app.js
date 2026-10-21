@@ -126,7 +126,7 @@ function updateRouteChrome(slug) {
   });
   const item = moduleBySlug.get(slug);
   document.querySelector('#breadcrumb-current').textContent = item ? item.short : 'Overview';
-  document.title = item ? `${item.number} · ${item.short} | Git & GitHub Field Guide` : 'Git & GitHub — The Field Guide';
+  document.title = item ? `${item.number} · ${item.short} | Git & GitHub Course` : 'Git & GitHub Course';
   document.querySelector('#reading-progress').style.width = '0%';
   document.body.classList.remove('nav-open');
   document.querySelector('#mobile-menu').setAttribute('aria-expanded', 'false');

@@ -111,6 +111,7 @@ kbd { display: inline-grid; min-width: 21px; height: 21px; place-items: center; 
 .app-shell { min-height: 100vh; margin-left: 278px; }
 .topbar { position: sticky; z-index: 20; top: 0; display: flex; height: 67px; align-items: center; justify-content: space-between; padding: 0 clamp(24px, 5vw, 76px); border-bottom: 1px solid var(--line); background: color-mix(in srgb, var(--page) 90%, transparent); backdrop-filter: blur(14px); }
 .topbar-left, .topbar-actions { display: flex; align-items: center; gap: 15px; }
+.topbar-actions { gap: 10px; }
 .breadcrumbs { display: flex; align-items: center; gap: 10px; color: var(--ink-faint); font-family: var(--mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; }
 .breadcrumbs strong { overflow: hidden; max-width: 42vw; color: var(--ink-soft); font-family: var(--sans); font-size: 12px; font-weight: 600; letter-spacing: 0; text-overflow: ellipsis; white-space: nowrap; text-transform: none; }
 .breadcrumb-slash { color: var(--line-strong); }
@@ -118,6 +119,10 @@ kbd { display: inline-grid; min-width: 21px; height: 21px; place-items: center; 
 .top-search .icon { width: 16px; height: 16px; }
 .top-search span { flex: 1; font-size: 11px; }
 .top-search kbd { min-width: auto; }
+.lessons-trigger { display: inline-flex; height: 37px; align-items: center; gap: 8px; padding: 0 10px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface); color: var(--ink-soft); font-size: 11px; font-weight: 700; cursor: pointer; transition: border .15s, background .15s, color .15s; }
+.lessons-trigger:hover, .lessons-trigger[aria-expanded='true'] { border-color: color-mix(in srgb, var(--green) 42%, var(--line)); background: var(--green-wash); color: var(--green); }
+.lessons-trigger .icon { width: 16px; height: 16px; }
+.lessons-trigger b { display: grid; min-width: 20px; height: 20px; place-items: center; padding: 0 5px; border-radius: 6px; background: var(--surface-soft); color: var(--ink-faint); font-family: var(--mono); font-size: 9px; font-weight: 400; }
 .top-github, .icon-button { display: grid; width: 35px; height: 35px; place-items: center; border: 1px solid transparent; border-radius: 9px; background: transparent; color: var(--ink-soft); }
 .top-github:hover, .icon-button:hover { border-color: var(--line); background: var(--surface); color: var(--ink); }
 .mobile-menu-button { display: none; }
@@ -259,6 +264,27 @@ main { min-height: calc(100vh - 115px); }
 /* Search dialog and mobile navigation */
 .search-dialog { width: min(620px, calc(100vw - 28px)); max-width: none; max-height: min(78vh, 690px); padding: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); color: var(--ink); box-shadow: var(--shadow); }
 .search-dialog::backdrop { background: rgb(18 27 21 / 43%); backdrop-filter: blur(4px); }
+.lessons-dialog { width: min(790px, calc(100vw - 28px)); max-width: none; max-height: min(82vh, 760px); padding: 22px; overflow: auto; border: 1px solid var(--line); border-radius: 17px; background: var(--surface); color: var(--ink); box-shadow: var(--shadow); }
+.lessons-dialog::backdrop { background: rgb(18 27 21 / 43%); backdrop-filter: blur(4px); }
+.lessons-dialog-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; padding: 3px 2px 17px; border-bottom: 1px solid var(--line); }
+.lessons-dialog-head h2 { margin: 4px 0 3px; font-family: var(--display); font-size: 22px; letter-spacing: -.045em; }
+.lessons-dialog-head p { margin: 0; color: var(--ink-faint); font-size: 11px; }
+.lesson-picker-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 25px; padding-top: 17px; }
+.lesson-picker-group { min-width: 0; }
+.lesson-picker-group h3 { display: flex; justify-content: space-between; gap: 12px; margin: 0 0 6px; padding: 0 7px; color: var(--ink-faint); font-family: var(--mono); font-size: 9px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; }
+.lesson-picker-group h3 small { color: var(--line-strong); font-size: 9px; }
+.lesson-picker-link { display: flex; min-height: 47px; align-items: center; gap: 9px; padding: 6px 7px; border-radius: 8px; color: var(--ink-soft); text-decoration: none; transition: background .14s, color .14s; }
+.lesson-picker-link:hover, .lesson-picker-link[aria-current='page'] { background: var(--green-wash); color: var(--green-dark); }
+.picker-number { display: grid; width: 27px; height: 27px; flex: 0 0 auto; place-items: center; border-radius: 7px; background: var(--surface-soft); color: var(--ink-faint); font-family: var(--mono); font-size: 9px; }
+.picker-number.is-complete { background: var(--green-soft); color: var(--green); }
+.picker-number .icon { width: 13px; height: 13px; stroke-width: 2.3; }
+.picker-copy { min-width: 0; flex: 1; }
+.picker-copy strong, .picker-copy small { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.picker-copy strong { color: var(--ink); font-size: 11px; font-weight: 700; }
+.lesson-picker-link[aria-current='page'] .picker-copy strong { color: var(--green); }
+.picker-copy small { margin-top: 2px; color: var(--ink-faint); font-size: 9px; }
+.picker-arrow { width: 14px; height: 14px; color: var(--line-strong); opacity: 0; transition: opacity .14s, color .14s; }
+.lesson-picker-link:hover .picker-arrow, .lesson-picker-link[aria-current='page'] .picker-arrow { color: var(--green); opacity: 1; }
 .search-dialog-inner { padding: 12px; }
 .search-box { display: flex; align-items: center; gap: 11px; padding: 4px 7px 4px 11px; border: 1px solid var(--line-strong); border-radius: 10px; background: var(--page); color: var(--ink-faint); }
 .search-box > .icon { width: 18px; height: 18px; }
@@ -308,6 +334,8 @@ main { min-height: calc(100vh - 115px); }
   .breadcrumbs strong { max-width: 38vw; font-size: 11px; }
   .top-search { width: 36px; height: 36px; justify-content: center; padding: 0; border-color: transparent; background: transparent; }
   .top-search span, .top-search kbd { display: none; }
+  .lessons-trigger { height: 35px; gap: 6px; padding: 0 8px; font-size: 10px; }
+  .lessons-trigger b { min-width: 18px; height: 18px; }
   .top-github { display: none; }
   .page-container { padding: 23px 17px 49px; }
   .site-footer { padding: 15px 17px 20px; font-size: 10px; }
@@ -341,6 +369,8 @@ main { min-height: calc(100vh - 115px); }
   .lesson-pager { padding: 9px; }
   .lesson-pager strong { font-size: 10px; }
   .search-dialog { align-self: start; margin-top: 9vh; }
+  .lessons-dialog { align-self: start; margin-top: 6vh; padding: 16px; }
+  .lesson-picker-grid { grid-template-columns: 1fr; gap: 14px; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }

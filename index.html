@@ -78,6 +78,9 @@
           <div class="breadcrumbs"><span>COURSE</span><span class="breadcrumb-slash">/</span><strong id="breadcrumb-current">Overview</strong></div>
         </div>
         <div class="topbar-actions">
+          <button class="lessons-trigger" id="open-lessons" type="button" aria-haspopup="dialog" aria-controls="lessons-dialog" aria-expanded="false" title="Jump to a lesson (Alt+L)">
+            <svg class="icon"><use href="#icon-book"></use></svg><span>Lessons</span><b>15</b>
+          </button>
           <button class="top-search" id="top-search" type="button"><svg class="icon"><use href="#icon-search"></use></svg><span>Search the course</span><kbd id="search-shortcut">Ctrl K</kbd></button>
           <a class="top-github" href="https://github.com/RDrahul123/Git-and-GitHub" target="_blank" rel="noreferrer" aria-label="View course on GitHub">
             <svg class="icon"><use href="#icon-external"></use></svg>
@@ -93,6 +96,14 @@
 
       <footer class="site-footer"><span>Made for curious builders.</span><span>Learn it. Try it. Ship it.</span></footer>
     </div>
+
+    <dialog class="lessons-dialog" id="lessons-dialog" aria-labelledby="lessons-title">
+      <div class="lessons-dialog-head">
+        <div><span class="section-kicker">THE COURSE MAP</span><h2 id="lessons-title">Jump to a lesson</h2><p>All 15 lessons, organized from first steps to advanced practice.</p></div>
+        <button class="dialog-close" id="close-lessons" type="button" aria-label="Close lesson list"><svg class="icon"><use href="#icon-close"></use></svg></button>
+      </div>
+      <nav class="lesson-picker-grid" id="lesson-picker-grid" aria-label="All course lessons"></nav>
+    </dialog>
 
     <dialog class="search-dialog" id="search-dialog" aria-labelledby="search-title">
       <div class="search-dialog-inner">

@@ -30,6 +30,8 @@ const moduleBySlug = new Map(MODULES.map((item) => [item.slug, item]));
 const page = document.querySelector('#page-content');
 const sidebar = document.querySelector('#sidebar');
 const courseNav = document.querySelector('#course-nav');
+const lessonPicker = document.querySelector('#lesson-picker-grid');
+const lessonsDialog = document.querySelector('#lessons-dialog');
 const searchDialog = document.querySelector('#search-dialog');
 const searchInput = document.querySelector('#search-input');
 const searchResults = document.querySelector('#search-results');
@@ -83,6 +85,17 @@ function renderNav() {
       </a>`).join('');
     return `<section class="nav-group"><h2 class="nav-group-title">${escapeHtml(group.title)}</h2>${links}</section>`;
   }).join('');
+  lessonPicker.innerHTML = GROUPS.map((group) => {
+    const groupModules = MODULES.filter((item) => item.group === group.title);
+    return `<section class="lesson-picker-group">
+      <h3><span>${escapeHtml(group.title)}</span><small>${String(groupModules.length).padStart(2, '0')}</small></h3>
+      ${groupModules.map((item) => `<a class="lesson-picker-link" href="${routeHref(item.slug)}" data-route="${item.slug}">
+        <span class="picker-number ${completed.has(item.slug) ? 'is-complete' : ''}">${completed.has(item.slug) ? icon('icon-check') : item.number}</span>
+        <span class="picker-copy"><strong>${escapeHtml(item.short)}</strong><small>${escapeHtml(item.time)} · ${escapeHtml(item.level)}</small></span>
+        ${icon('icon-arrow', 'picker-arrow')}
+      </a>`).join('')}
+    </section>`;
+  }).join('');
   updateProgress();
 }
 
@@ -93,11 +106,21 @@ function updateProgress() {
   document.querySelector('#progress-detail').textContent = `${count} of ${MODULES.length} lessons complete`;
   document.querySelector('#progress-fill').style.width = `${percent}%`;
   document.querySelectorAll('.nav-link').forEach((link) => link.classList.toggle('is-complete', completed.has(link.dataset.route)));
+  document.querySelectorAll('.lesson-picker-link').forEach((link) => {
+    const done = completed.has(link.dataset.route);
+    const badge = link.querySelector('.picker-number');
+    badge.classList.toggle('is-complete', done);
+    badge.innerHTML = done ? icon('icon-check') : moduleBySlug.get(link.dataset.route).number;
+  });
 }
 
 function updateRouteChrome(slug) {
   currentSlug = slug;
   document.querySelectorAll('.nav-link').forEach((link) => {
+    if (link.dataset.route === slug) link.setAttribute('aria-current', 'page');
+    else link.removeAttribute('aria-current');
+  });
+  document.querySelectorAll('.lesson-picker-link').forEach((link) => {
     if (link.dataset.route === slug) link.setAttribute('aria-current', 'page');
     else link.removeAttribute('aria-current');
   });
@@ -456,9 +479,16 @@ async function performSearch(query) {
 }
 
 function openSearch() {
+  if (lessonsDialog.open) lessonsDialog.close();
   if (!searchDialog.open) searchDialog.showModal();
   searchInput.focus();
   searchInput.select();
+}
+
+function openLessons() {
+  if (searchDialog.open) searchDialog.close();
+  if (!lessonsDialog.open) lessonsDialog.showModal();
+  document.querySelector('#open-lessons').setAttribute('aria-expanded', 'true');
 }
 
 function applyTheme(theme) {
@@ -486,6 +516,7 @@ function initialize() {
       const hash = routeLink.dataset.routeHash || '';
       goTo(routeLink.dataset.route, { hash });
       if (searchDialog.open) searchDialog.close();
+      if (lessonsDialog.open) lessonsDialog.close();
       return;
     }
     const completeButton = event.target.closest('[data-complete]');
@@ -518,6 +549,11 @@ function initialize() {
   document.querySelector('#open-search').addEventListener('click', openSearch);
   document.querySelector('#top-search').addEventListener('click', openSearch);
   document.querySelector('#close-search').addEventListener('click', () => searchDialog.close());
+  document.querySelector('#open-lessons').addEventListener('click', openLessons);
+  document.querySelector('#close-lessons').addEventListener('click', () => lessonsDialog.close());
+  lessonsDialog.addEventListener('close', () => document.querySelector('#open-lessons').setAttribute('aria-expanded', 'false'));
+  lessonsDialog.addEventListener('click', (event) => { if (event.target === lessonsDialog) lessonsDialog.close(); });
+  searchDialog.addEventListener('click', (event) => { if (event.target === searchDialog) searchDialog.close(); });
   document.querySelector('#theme-toggle').addEventListener('click', () => applyTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'));
   document.querySelector('#mobile-menu').addEventListener('click', (event) => {
     const isOpen = document.body.classList.toggle('nav-open');
@@ -539,6 +575,10 @@ function initialize() {
     if (event.key === 'Escape') {
       document.body.classList.remove('nav-open');
       document.querySelector('#mobile-menu').setAttribute('aria-expanded', 'false');
+    }
+    if (event.altKey && event.key.toLowerCase() === 'l') {
+      event.preventDefault();
+      openLessons();
     }
   });
   window.addEventListener('popstate', () => goTo(new URLSearchParams(location.search).get('lesson') || 'home', { push: false, hash: location.hash.slice(1) }));
